@@ -1,16 +1,16 @@
-import './styles/index.css';
+import '../styles/index.css';
 import $ from 'jquery';
-import api from './scripts/api';
-import store from './scripts/store';
-import shoppingList from './scripts/shopping-list';
+import API from './api';
+import STORE from './store';
+import shoppingList from './shopping-list';
 
 $(document).ready(function() {
   shoppingList.bindEventListeners();
 
   // On initial load, fetch Shopping Items and render
-  api.getItems()
+  API.getItems()
     .then((items) => {
-      items.forEach((item) => store.addItem(item));
+      items.forEach((item) => STORE.addItem(item));
       shoppingList.render();
     })
     .catch(err => console.log(err.message));

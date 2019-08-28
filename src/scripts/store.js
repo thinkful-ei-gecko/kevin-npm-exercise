@@ -32,7 +32,7 @@ const setSearchTerm = function(term) {
   this.searchTerm = term;
 };
 
-const store = {
+export default {
   items: [],
   error: null,
   hideCheckedItems: false,
@@ -47,5 +47,3 @@ const store = {
   setSearchTerm,
   setItemIsEditing,
 };
-
-export default store;

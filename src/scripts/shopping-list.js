@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import api from './api';
-import store from './store';
+import API from './api';
+import STORE from './store';
 
 function generateError(message) {
   return `
@@ -47,8 +47,8 @@ function generateShoppingItemsString(shoppingList) {
 }
 
 function renderError() {
-  if (store.error) {
-    const el = generateError(store.error);
+  if (STORE.error) {
+    const el = generateError(STORE.error);
     $('.error-container').html(el);
   } else {
     $('.error-container').empty();
@@ -58,13 +58,13 @@ function renderError() {
 function render() {
   renderError();
 
-  let items = [ ...store.items ];
-  if (store.hideCheckedItems) {
+  let items = [ ...STORE.items ];
+  if (STORE.hideCheckedItems) {
     items = items.filter(item => !item.checked);
   }
 
-  if (store.searchTerm) {
-    items = items.filter(item => item.name.includes(store.searchTerm));
+  if (STORE.searchTerm) {
+    items = items.filter(item => item.name.includes(STORE.searchTerm));
   }
 
   const shoppingListItemsString = generateShoppingItemsString(items);
@@ -76,13 +76,13 @@ function handleNewItemSubmit() {
     event.preventDefault();
     const newItemName = $('.js-shopping-list-entry').val();
     $('.js-shopping-list-entry').val('');
-    api.createItem(newItemName)
+    API.createItem(newItemName)
       .then((newItem) => {
-        store.addItem(newItem);
+        STORE.addItem(newItem);
         render();
       })
       .catch((err) => {
-        store.setError(err.message);
+        STORE.setError(err.message);
         renderError();
       });
   });
@@ -97,15 +97,15 @@ function getItemIdFromElement(item) {
 function handleItemCheckClicked() {
   $('.js-shopping-list').on('click', '.js-item-toggle', event => {
     const id = getItemIdFromElement(event.currentTarget);
-    const item = store.findById(id);
-    api.updateItem(id, { checked: !item.checked })
+    const item = STORE.findById(id);
+    API.updateItem(id, { checked: !item.checked })
       .then(() => {
-        store.findAndUpdate(id, { checked: !item.checked });
+        STORE.findAndUpdate(id, { checked: !item.checked });
         render();
       })
       .catch((err) => {
         console.log(err);
-        store.setError(err.message);
+        STORE.setError(err.message);
         renderError();
       }
       );
@@ -116,14 +116,14 @@ function handleDeleteItemClicked() {
   $('.js-shopping-list').on('click', '.js-item-delete', event => {
     const id = getItemIdFromElement(event.currentTarget);
 
-    api.deleteItem(id)
+    API.deleteItem(id)
       .then(() => {
-        store.findAndDelete(id);
+        STORE.findAndDelete(id);
         render();
       })
       .catch((err) => {
         console.log(err);
-        store.setError(err.message);
+        STORE.setError(err.message);
         renderError();
       }
       );
@@ -135,15 +135,15 @@ function handleEditShoppingItemSubmit() {
     event.preventDefault();
     const id = getItemIdFromElement(event.currentTarget);
     const itemName = $(event.currentTarget).find('.shopping-item').val();
-    api.updateItem(id, { name: itemName })
+    API.updateItem(id, { name: itemName })
       .then(() => {
-        store.findAndUpdate(id, { name: itemName });
-        store.setItemIsEditing(id, false);
+        STORE.findAndUpdate(id, { name: itemName });
+        STORE.setItemIsEditing(id, false);
         render();
       })
       .catch((err) => {
         console.log(err);
-        store.setError(err.message);
+        STORE.setError(err.message);
         renderError();
       });
   });
@@ -151,7 +151,7 @@ function handleEditShoppingItemSubmit() {
 
 function handleToggleFilterClick() {
   $('.js-filter-checked').click(() => {
-    store.toggleCheckedFilter();
+    STORE.toggleCheckedFilter();
     render();
   });
 }
@@ -159,7 +159,7 @@ function handleToggleFilterClick() {
 function handleShoppingListSearch() {
   $('.js-shopping-list-search-entry').on('keyup', event => {
     const val = $(event.currentTarget).val();
-    store.setSearchTerm(val);
+    STORE.setSearchTerm(val);
     render();
   });
 }
@@ -167,14 +167,14 @@ function handleShoppingListSearch() {
 function handleItemStartEditing() {
   $('.js-shopping-list').on('click', '.js-item-edit', event => {
     const id = getItemIdFromElement(event.target);
-    store.setItemIsEditing(id, true);
+    STORE.setItemIsEditing(id, true);
     render();
   });
 }
 
 function handleCloseError() {
   $('.error-container').on('click', '#cancel-error', () => {
-    store.setError(null);
+    STORE.setError(null);
     renderError();
   });
 }
@@ -189,9 +189,8 @@ function bindEventListeners() {
   handleItemStartEditing();
   handleCloseError();
 }
-const shoppingList = {
+
+export default {
   render,
   bindEventListeners
 };
-
-export default shoppingList;
