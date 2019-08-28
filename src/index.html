@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Shopping List</title>
+  <link rel="shortcut icon" href="#">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <div class="error-container"></div>
+    <h1>Shopping List</h1>
+    <form id="js-shopping-list-form">
+      <label for="shopping-list-entry">Add an item</label>
+      <input type="text" name="shopping-list-entry" class="js-shopping-list-entry" placeholder="e.g., broccoli">
+      <button type="submit">Add item</button>
+      <div>
+        <input type="checkbox" id="filter-checked" class="filter-checked js-filter-checked" />
+        <label for="filter-checked">Hide Checked</label>
+      </div>
+      <div>
+        <label for="js-shopping-list-search-entry">Search:</label>
+        <input type="text" name="shopping-list-search-entry" class="js-shopping-list-search-entry" />
+      </div>
+    </form>
+    <ul class="shopping-list js-shopping-list">
+    </ul>
+  </div>
+</body>
+</html>
