@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/thinkful-ei-gecko/shopping-list-starter#readme",
   "dependencies": {
-    "jquery": "^3.4.1"
+    "jquery": "^3.5.0"
   },
   "devDependencies": {
     "css-loader": "^3.2.0",
